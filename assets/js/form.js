@@ -61,7 +61,7 @@
         });
       });
     });
-    function data(){ return { name: el("name").value.trim(), cc: el("cc").value, phone: el("phone").value.trim(), unit: picks.unit||"", budget: picks.budget||"", purpose: picks.purpose||"", handover_payment: picks.pay||"", consent: el("consent").checked, project: "Palm Springs by Nakheel", offer: "Prop-AI Palm Springs analysis", source: location.href }; }
+    function data(){ return { name: el("name").value.trim(), cc: el("cc").value, phone: el("phone").value.trim(), unit: picks.unit||"", budget: picks.budget||"", purpose: picks.purpose||"", handover_payment: picks.pay||"", consent: el("consent").checked, project: "Palm Springs by Nakheel", offer: "Prop-AI Palm Springs 3 picks report", source: location.href }; }
     function check(){
       var d = data(), e = {};
       if (d.name.length < 2) e.name = "Please enter your full name.";
@@ -90,8 +90,10 @@
       var btn = form.querySelector(".lf-go"); btn.disabled = true; btn.innerHTML = '<span class="lf-spin" aria-hidden="true"></span><span>Sending…</span>';
       var d = data();
       var send = SUBMIT_ENDPOINT ? fetch(SUBMIT_ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(d) }) : new Promise(function(r){ setTimeout(r, 1200); });
-      send.then(function(){
-        if (window.fbq) window.fbq("track", "Lead");
+      send.then(function(r){ if (r && r.ok === false) throw new Error("HTTP " + r.status);
+        // Analytics: one dataLayer event for GTM (no name or phone in it). Fire the Meta Lead / GA4 tags from this trigger in GTM.
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "generate_lead", form_name: "palm_springs_report", project: "Palm Springs by Nakheel", unit: d.unit, budget: d.budget, purpose: d.purpose, handover_payment: d.handover_payment });
         var first = d.name.split(/\s+/)[0] || "there";
         host.innerHTML = '<div class="lf" role="status" style="gap:16px;padding-top:28px"><div style="display:flex;justify-content:space-between"><span class="lf-ok"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><button type="button" class="lf-x" data-close aria-label="Close">×</button></div><h2 class="mont" style="font-weight:800;font-size:24px"></h2><p>Your Palm Springs report is on its way to WhatsApp, usually within 5 minutes.</p><p class="muted">Our team will follow up with one quick question: are you booking at launch, or watching for now?</p><a class="btn btn-outline" href="https://wa.me/' + WHATSAPP_NUMBER + '" target="_blank" rel="noopener" style="width:100%">Open WhatsApp</a></div>';
         host.querySelector("h2").textContent = "Thanks, " + first + ".";
@@ -102,7 +104,7 @@
   }
 
   var dlg = document.getElementById("dlg"), host = document.getElementById("dlg-form"), sticky = document.getElementById("sticky"), last = null, mounted = false;
-  function open(){ if (!mounted) { mount(host); mounted = true; } last = document.activeElement; dlg.hidden = false; document.body.style.overflow = "hidden"; if (sticky) sticky.style.visibility = "hidden"; setTimeout(function(){ var f = host.querySelector("input,button"); if (f) f.focus(); }, 30); }
+  function open(){ window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: "form_open", form_name: "palm_springs_report" }); if (!mounted) { mount(host); mounted = true; } last = document.activeElement; dlg.hidden = false; document.body.style.overflow = "hidden"; if (sticky) sticky.style.visibility = "hidden"; setTimeout(function(){ var f = host.querySelector("input,button"); if (f) f.focus(); }, 30); }
   function close(){ dlg.hidden = true; document.body.style.overflow = ""; if (sticky) sticky.style.visibility = ""; if (last) last.focus(); }
   document.querySelectorAll("[data-open]").forEach(function(b){ b.addEventListener("click", open); });
   dlg.querySelector(".bd").addEventListener("click", close);
