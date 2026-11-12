@@ -5,7 +5,7 @@
 
   var codes = [["+971","UAE"],["+966","KSA"],["+974","QA"],["+965","KW"],["+973","BH"],["+968","OM"],["+44","UK"],["+91","IN"],["+92","PK"],["+7","RU"],["+49","DE"],["+33","FR"],["+86","CN"],["+1","US/CA"],["+20","EG"]];
   var groups = [
-    ["unit","Unit of interest",["3BR townhouse","4BR townhouse","Villa","Not sure"],"two"],
+    ["unit","Unit of interest",["3-bed townhouse","4-bed townhouse","5-bed villa","Not sure"],"two"],
     ["budget","Budget",["Under AED 4M","AED 4–6M","AED 6–9M","AED 9M+"],"two"],
     ["purpose","Purpose",["Live in","Invest","Both"],"three"],
     ["pay","Handover payment (40%)",["Cash","Mortgage","Not sure"],"three"]
@@ -35,7 +35,7 @@
 
   function formHTML(){
     var h = '<form class="lf" novalidate aria-labelledby="lf-t">' +
-      '<div class="lf-head"><div><h2 id="lf-t" class="mont">Get the Palm Springs analysis</h2><span class="muted" style="font-size:14px">Which unit we\'d buy, and why. Sent to your WhatsApp.</span></div><button type="button" class="lf-x" data-close aria-label="Close">×</button></div>' +
+      '<div class="lf-head"><div><h2 id="lf-t" class="mont">Get the Palm Springs report</h2><span class="muted" style="font-size:14px">Our three picks, the comparables and the payment plan. Sent to your WhatsApp.</span></div><button type="button" class="lf-x" data-close aria-label="Close">×</button></div>' +
       '<div class="lf-sum" role="alert">' + ic + '<span></span></div>' +
       '<div><label for="lf-name">Full name <span class="rq" aria-hidden="true">*</span></label><input class="lf-in" id="lf-name" name="name" autocomplete="name" aria-required="true" placeholder="e.g. Aisha Rahman" style="margin-top:6px"><span class="lf-err" data-e="name">' + ic + '<span></span></span></div>' +
       '<div><label for="lf-phone">WhatsApp number <span class="rq" aria-hidden="true">*</span></label><div class="lf-ph" style="margin-top:6px"><select class="lf-in" name="cc" aria-label="Country code">' + codes.map(function(c){ return '<option value="'+c[0]+'">'+c[1]+' '+c[0]+'</option>'; }).join("") + '</select><input class="lf-in" id="lf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national" aria-required="true" placeholder="50 123 4567"></div><span class="lf-err" data-e="phone">' + ic + '<span></span></span></div>';
@@ -44,7 +44,7 @@
         g[2].map(function(o){ return '<button type="button" aria-pressed="false">' + esc(o) + '</button>'; }).join("") + '</div><span class="lf-err" data-e="' + g[0] + '">' + ic + '<span></span></span></fieldset>';
     });
     h += '<div><div class="lf-c"><input type="checkbox" id="lf-ok" name="consent" aria-required="true"><label for="lf-ok">I agree to be contacted by Prop-AI on WhatsApp, phone or email about Palm Springs and related projects. <a href="#privacy">Privacy policy</a></label></div><span class="lf-err" data-e="consent">' + ic + '<span></span></span></div>' +
-      '<button type="submit" class="btn btn-primary lf-go"><span>Send me the analysis</span></button>' +
+      '<button type="submit" class="btn btn-primary lf-go"><span>Send me the report</span></button>' +
       '<p class="fine" style="text-align:center">Free · No obligation to buy</p></form>';
     return h;
   }
@@ -70,7 +70,7 @@
       if (!d.budget) e.budget = "Choose a budget range.";
       if (!d.purpose) e.purpose = "Tell us if you'll live in it or invest.";
       if (!d.handover_payment) e.pay = "Choose how you'd pay the 40% at handover.";
-      if (!d.consent) e.consent = "Please tick the box so we can send the analysis.";
+      if (!d.consent) e.consent = "Please tick the box so we can send the report.";
       return e;
     }
     function show(e){
@@ -93,10 +93,10 @@
       send.then(function(){
         if (window.fbq) window.fbq("track", "Lead");
         var first = d.name.split(/\s+/)[0] || "there";
-        host.innerHTML = '<div class="lf" role="status" style="gap:16px;padding-top:28px"><div style="display:flex;justify-content:space-between"><span class="lf-ok"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><button type="button" class="lf-x" data-close aria-label="Close">×</button></div><h2 class="mont" style="font-weight:800;font-size:24px"></h2><p>Your Palm Springs analysis is on its way to WhatsApp, usually within 5 minutes.</p><p class="muted">Our team will follow up with one quick question: are you booking at launch, or watching for now?</p><a class="btn btn-outline" href="https://wa.me/' + WHATSAPP_NUMBER + '" target="_blank" rel="noopener" style="width:100%">Open WhatsApp</a></div>';
+        host.innerHTML = '<div class="lf" role="status" style="gap:16px;padding-top:28px"><div style="display:flex;justify-content:space-between"><span class="lf-ok"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></span><button type="button" class="lf-x" data-close aria-label="Close">×</button></div><h2 class="mont" style="font-weight:800;font-size:24px"></h2><p>Your Palm Springs report is on its way to WhatsApp, usually within 5 minutes.</p><p class="muted">Our team will follow up with one quick question: are you booking at launch, or watching for now?</p><a class="btn btn-outline" href="https://wa.me/' + WHATSAPP_NUMBER + '" target="_blank" rel="noopener" style="width:100%">Open WhatsApp</a></div>';
         host.querySelector("h2").textContent = "Thanks, " + first + ".";
         host.querySelectorAll("[data-close]").forEach(function(b){ b.addEventListener("click", close); });
-      }).catch(function(){ btn.disabled = false; btn.innerHTML = "<span>Send me the analysis</span>"; var s = host.querySelector(".lf-sum"); s.classList.add("show"); s.querySelector("span").textContent = "Something went wrong. Please try again."; });
+      }).catch(function(){ btn.disabled = false; btn.innerHTML = "<span>Send me the report</span>"; var s = host.querySelector(".lf-sum"); s.classList.add("show"); s.querySelector("span").textContent = "Something went wrong. Please try again."; });
     });
     host.querySelectorAll("[data-close]").forEach(function(b){ b.addEventListener("click", close); });
   }
