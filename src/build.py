@@ -10,7 +10,7 @@ import base64, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
-IMAGES = ['th2', 'aerial_pja', 'pool', 'park', 'club', 'int_lv']
+IMAGES = ['th2', 'masterplan', 'aerial_pja', 'pool', 'park', 'club', 'int_lv']
 VIDEO_ATTRS = 'autoplay muted loop playsinline preload="auto"'
 VIDEO_JS = '''(function(){ var v = document.querySelector(".hero video"); if (!v) return;
   var c = navigator.connection; if ((c && c.saveData) || matchMedia("(prefers-reduced-motion: reduce)").matches) { v.remove(); return; }
@@ -37,8 +37,8 @@ def page(body, head_css, scripts):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Palm Springs by Nakheel — Prop-AI's analysis: which unit we'd buy</title>
-<meta name="description" content="We checked Palm Springs against every off-plan villa launch in Dubai. 3BR townhouses from AED 3.8M (subject to Nakheel confirmation). Get Prop-AI's free analysis.">
+<title>Palm Springs by Nakheel — Our three picks · Prop-AI</title>
+<meta name="description" content="Prop-AI's three picks from Palm Springs Phase 1, with DLD comparables and the payment plan. Townhouses from AED 3.8M, villas from AED 7.0M (starting prices, subject to Nakheel confirmation).">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
 <style>.dlg[hidden]{{display:none}}</style>
@@ -47,7 +47,7 @@ def page(body, head_css, scripts):
 <body>
 {body}
 <div class="sticky" id="sticky"><button type="button" class="btn btn-primary" data-open>Get the free analysis</button></div>
-<div class="dlg" id="dlg" hidden><button type="button" class="bd" aria-label="Close form" tabindex="-1"></button><div class="panel" role="dialog" aria-modal="true" aria-label="Get the Palm Springs analysis" id="dlg-form"></div></div>
+<div class="dlg" id="dlg" hidden><button type="button" class="bd" aria-label="Close form" tabindex="-1"></button><div class="panel" role="dialog" aria-modal="true" aria-label="Get the Palm Springs report" id="dlg-form"></div></div>
 {scripts}
 </body>
 </html>
