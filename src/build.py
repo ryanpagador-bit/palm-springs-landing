@@ -10,6 +10,23 @@ import base64, os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
+# Google Tag Manager container for the campaign, e.g. "GTM-ABC1234".
+# Leave as GTM-XXXXXXX to build without GTM.
+GTM_ID = "GTM-XXXXXXX"
+
+def gtm_head():
+    if not GTM_ID or GTM_ID == "GTM-XXXXXXX": return ""
+    return ("<!-- Google Tag Manager -->\n<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':\n"
+            "new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],\n"
+            "j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=\n"
+            "'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n"
+            f"}})(window,document,'script','dataLayer','{GTM_ID}');</script>\n<!-- End Google Tag Manager -->\n")
+
+def gtm_body():
+    if not GTM_ID or GTM_ID == "GTM-XXXXXXX": return ""
+    return (f'<!-- Google Tag Manager (noscript) -->\n<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={GTM_ID}" '
+            'height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>\n<!-- End Google Tag Manager (noscript) -->\n')
+
 IMAGES = ['th2', 'masterplan', 'aerial_pja', 'pool', 'park', 'club', 'int_lv']
 VIDEO_ATTRS = 'autoplay muted loop playsinline preload="auto"'
 VIDEO_JS = '''(function(){ var v = document.querySelector(".hero video"); if (!v) return;
@@ -36,7 +53,7 @@ def page(body, head_css, scripts):
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+{gtm_head()}<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Palm Springs by Nakheel — Our three picks · Prop-AI</title>
 <meta name="description" content="Prop-AI's three picks from Palm Springs Phase 1, with DLD comparables and the payment plan. Townhouses from AED 3.8M, villas from AED 7.0M (starting prices, subject to Nakheel confirmation).">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,7 +62,7 @@ def page(body, head_css, scripts):
 {head_css}
 </head>
 <body>
-{body}
+{gtm_body()}{body}
 <div class="sticky" id="sticky"><button type="button" class="btn btn-primary" data-open>Get the free analysis</button></div>
 <div class="dlg" id="dlg" hidden><button type="button" class="bd" aria-label="Close form" tabindex="-1"></button><div class="panel" role="dialog" aria-modal="true" aria-label="Get the Palm Springs report" id="dlg-form"></div></div>
 {scripts}
